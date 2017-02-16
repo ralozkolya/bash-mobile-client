@@ -1,18 +1,1 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>Случайные Цитаты</ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content padding>
-  <ion-refresher (ionRefresh)="loadQuotes($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-  <div class="text-center" *ngIf="!quotes && !loadFailed && !loadByRefresher">
-    <ion-spinner></ion-spinner>
-  </div>
-  <h2 *ngIf="loadFailed">Failed to load quotes</h2>
-  <div class="quotes">
-    <app-quote *ngFor="let quote of quotes" [quote]="quote"></app-quote>
-  </div>
-</ion-content>
+<quote-feed [feedType]="feedType" [title]="title"></quote-feed>

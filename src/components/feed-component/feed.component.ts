@@ -1,28 +1,31 @@
-import { Component } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
-import {NavController, Refresher} from 'ionic-angular';
+import {NavController, Refresher, InfiniteScroll} from 'ionic-angular';
 import {HttpService} from "../../services/http.service";
 import {Quote} from "../../interfaces/interfaces";
 import {FeedType} from "../../interfaces/enums";
 
 @Component({
-  selector: 'page-home',
+  selector: 'quote-feed',
   templateUrl: 'feed.component.html'
 })
-export class FeedComponent {
+export class FeedComponent implements OnInit {
 
-  protected feedType: FeedType;
+  @Input()
+  private feedType: FeedType;
 
-  protected quotes: Quote[];
-  protected loadByRefresher: boolean = false;
-  protected loadFailed: boolean = false;
+  @Input()
+  private title: string;
 
-  constructor(public navCtrl: NavController, protected http: HttpService) {
-    console.log(http);
-  }
+  private quotes: Quote[];
+  private page: number;
 
-  public ionViewWillEnter(): void {
+  private loadByRefresher: boolean = false;
+  private loadFailed: boolean = false;
 
+  constructor(public navCtrl: NavController, private http: HttpService) {}
+
+  public ngOnInit(): void {
     this.loadQuotes();
   }
 
@@ -36,9 +39,30 @@ export class FeedComponent {
 
       if(refresher) refresher.complete();
 
-      this.quotes = response;
+      this.quotes = response.data;
+
+      if(response.page) {
+        this.page = response.page;
+      }
     }, error => {
       this.loadFailed = true;
     });
+  }
+
+  private loadMore(infinite: InfiniteScroll = null): void {
+
+    this.page > 1 ? this.page-- : infinite.enable(false);
+
+    this.http.getFeed(this.feedType, this.page).subscribe(response => {
+      if(infinite) infinite.complete();
+
+      this.quotes = this.quotes.concat(response.data);
+
+      if(response.page) {
+        this.page = response.page;
+      }
+    }, error => {
+      this.loadFailed = true;
+    })
   }
 }

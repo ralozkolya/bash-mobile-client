@@ -2,7 +2,7 @@ import {Http} from "@angular/http";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import 'rxjs/add/operator/map';
-import {Quote} from "../interfaces/interfaces";
+import {QuotesResponse} from "../interfaces/interfaces";
 import {FeedType} from "../interfaces/enums";
 
 @Injectable()
@@ -12,20 +12,25 @@ export class HttpService {
 
   constructor(private http: Http) {}
 
-  public getFeed(type: FeedType): Observable<Quote[]> {
+  public getFeed(type: FeedType, page: number = null): Observable<QuotesResponse> {
     switch (type) {
       case FeedType.Random: return this.getRandom();
-      case FeedType.New: return this.getNew();
+      case FeedType.New: return this.getNew(page);
     }
   }
 
-  public getRandom(): Observable<Quote[]> {
+  public getRandom(): Observable<QuotesResponse> {
     return this.http.get(`${this.baseUrl}random`)
-      .map(response => response.json().data);
+      .map(response => response.json());
   }
 
-  public getNew(): Observable<Quote[]> {
-    return this.http.get(this.baseUrl)
-      .map(response => response.json().data);
+  public getNew(page: number = null): Observable<QuotesResponse> {
+
+    let url: string = this.baseUrl;
+
+    if(page) url += page;
+
+    return this.http.get(url)
+      .map(response => response.json());
   }
 }

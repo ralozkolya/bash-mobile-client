@@ -3,3 +3,8 @@ export interface Quote {
   text: string;
   date: string;
 }
+
+export interface QuotesResponse {
+  data: Quote[];
+  page: number;
+}

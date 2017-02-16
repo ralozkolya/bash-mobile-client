@@ -1,5 +1,6 @@
-<div class="quote">
-  <h3>{{quote.id}}</h3>
-  <h5>{{quote.date | date}}</h5>
-  <div [innerHTML]="quote.text"></div>
-</div>
+<ion-card>
+  <ion-card-header>
+    {{quote.id}}, {{quote.date | date}}
+  </ion-card-header>
+  <ion-card-content [innerHTML]="quote.text"></ion-card-content>
+</ion-card>
