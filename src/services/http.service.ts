@@ -8,7 +8,7 @@ import {FeedType} from "../interfaces/enums";
 @Injectable()
 export class HttpService {
 
-  private baseUrl: string = 'http://localhost:3000/api/';
+  private baseUrl: string = 'http://indiestudio.ge:3000/api/';
 
   constructor(private http: Http) {}
 
