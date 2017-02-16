@@ -1,6 +1,22 @@
 <ion-card>
-  <ion-card-header>
-    {{quote.id}}, {{quote.date | date}}
-  </ion-card-header>
   <ion-card-content [innerHTML]="quote.text"></ion-card-content>
+  <ion-row>
+    <ion-col>
+      <button ion-button small color="light">
+        <strong>
+          <ion-icon name="arrow-up"></ion-icon>
+        </strong>
+      </button>
+      <span class="actions-label">{{quote.votes}}</span>
+      <button ion-button small color="light">
+        <ion-icon name="arrow-down"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col class="share-col">
+      <span class="actions-label">{{quote.date | date:'dd/MM/yy'}}</span>
+      <button ion-button small (click)="share()">
+        <ion-icon name="share"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
 </ion-card>

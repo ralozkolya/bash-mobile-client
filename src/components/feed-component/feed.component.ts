@@ -51,7 +51,12 @@ export class FeedComponent implements OnInit {
 
   private loadMore(infinite: InfiniteScroll = null): void {
 
-    this.page > 1 ? this.page-- : infinite.enable(false);
+    if(!this.page || this.page < 2) {
+      infinite.enable(false);
+      return;
+    }
+
+    this.page--;
 
     this.http.getFeed(this.feedType, this.page).subscribe(response => {
       if(infinite) infinite.complete();
