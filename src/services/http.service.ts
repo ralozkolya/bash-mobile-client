@@ -1,14 +1,14 @@
-import {Http} from "@angular/http";
+import {Http, Response} from "@angular/http";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import 'rxjs/add/operator/map';
 import {QuotesResponse} from "../interfaces/interfaces";
-import {FeedType} from "../interfaces/enums";
+import {FeedType, Vote} from "../interfaces/enums";
 
 @Injectable()
 export class HttpService {
 
-  private baseUrl: string = 'http://indiestudio.ge:3000/api/';
+  private baseUrl: string = 'http://localhost:3000/api/';
 
   constructor(private http: Http) {}
 
@@ -32,5 +32,23 @@ export class HttpService {
 
     return this.http.get(url)
       .map(response => response.json());
+  }
+
+  public vote(quote: string, type: Vote): Observable<Response> {
+
+    let act: string;
+
+    if(type === Vote.Up) {
+      act = 'rulez';
+    } else {
+      act += 'sux';
+    }
+
+    let url: string = `${this.baseUrl}vote`;
+
+    return this.http.post(url, {
+      quote: quote,
+      act: act,
+    });
   }
 }

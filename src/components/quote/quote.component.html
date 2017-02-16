@@ -2,13 +2,13 @@
   <ion-card-content [innerHTML]="quote.text"></ion-card-content>
   <ion-row>
     <ion-col>
-      <button ion-button small color="light">
+      <button ion-button small color="light" (click)="voteUp()" [disabled]="lastVote">
         <strong>
           <ion-icon name="arrow-up"></ion-icon>
         </strong>
       </button>
       <span class="actions-label">{{quote.votes}}</span>
-      <button ion-button small color="light">
+      <button ion-button small color="light" (click)="voteDown()" [disabled]="lastVote">
         <ion-icon name="arrow-down"></ion-icon>
       </button>
     </ion-col>

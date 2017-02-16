@@ -1,6 +1,8 @@
 import {Component, Input} from "@angular/core";
 import {Quote} from "../../interfaces/interfaces";
 import {SocialSharing} from "ionic-native";
+import {Vote} from "../../interfaces/enums";
+import {HttpService} from "../../services/http.service";
 
 @Component({
   selector: 'app-quote',
@@ -8,14 +10,38 @@ import {SocialSharing} from "ionic-native";
 })
 export class QuoteComponent {
 
+  @Input() private quote: Quote;
+
   private shareUrl: string = 'http://bash.im/quote/';
 
-  @Input() quote: Quote;
+  private lastVote: Vote;
+
+  constructor(private http: HttpService) {}
 
   private share(): void {
-    SocialSharing.share(null, null, null, this.shareUrl + this.quote.id)
-      .catch(error => {
+    SocialSharing.share(null, null, null, this.shareUrl + this.quote.id);
+  }
+
+  private voteUp(): void {
+    this.vote(Vote.Up);
+  }
+
+  private voteDown(): void {
+    this.vote(Vote.Down);
+  }
+
+  private vote(vote: Vote): void {
+
+    if(!this.lastVote) {
+
+      let id: string = this.quote.id;
+
+      this.http.vote(id, vote).subscribe(() => {
+        this.lastVote = vote;
+        this.quote.votes += vote;
+      }, error => {
         console.log(error);
       });
+    }
   }
 }
