@@ -35,7 +35,7 @@ export class FeedComponent implements OnInit {
 
   private loadQuotes(refresher: Refresher = null): void {
 
-    if(this.content) this.content.scrollToTop(300);
+    if(this.content && !refresher) this.content.scrollToTop(300);
 
     this.loading = true;
 
