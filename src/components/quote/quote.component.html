@@ -7,7 +7,7 @@
           <ion-icon name="arrow-up"></ion-icon>
         </strong>
       </button>
-      <span class="actions-label">{{quote.votes}}</span>
+      <span class="actions-label">{{quote.votes | votes}}</span>
       <button ion-button small color="light" (click)="voteDown()" [disabled]="lastVote">
         <ion-icon name="arrow-down"></ion-icon>
       </button>

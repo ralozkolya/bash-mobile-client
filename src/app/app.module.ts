@@ -8,6 +8,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { QuoteComponent } from '../components/quote/quote.component';
 import { HttpService } from "../services/http.service";
 import {FeedComponent} from "../components/feed-component/feed.component";
+import {VotesPipe} from "../pipes/votes.pipe";
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {FeedComponent} from "../components/feed-component/feed.component";
     TabsPage,
     QuoteComponent,
     FeedComponent,
+    VotesPipe,
   ],
   imports: [
     IonicModule.forRoot(MyApp)

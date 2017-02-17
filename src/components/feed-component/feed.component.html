@@ -8,14 +8,19 @@
   <ion-refresher (ionRefresh)="loadQuotes($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <div class="text-center" *ngIf="!quotes && !loadFailed && !loadByRefresher" padding>
+  <div class="text-center" *ngIf="loading && !loadFailed && !loadByRefresher" padding>
     <ion-spinner></ion-spinner>
   </div>
-  <h2 *ngIf="loadFailed">Failed to load quotes</h2>
+  <div *ngIf="loadFailed" padding>
+    <h2 >Не удалось загрузить цитаты</h2>
+  </div>
   <div class="quotes">
     <app-quote *ngFor="let quote of quotes" [quote]="quote"></app-quote>
   </div>
-  <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+  <div padding>
+    <button ion-button block *ngIf="showLoadMoreButton()" (click)="loadQuotes()">Хочу еще!</button>
+  </div>
+  <ion-infinite-scroll *ngIf="showInfiniteScrolling()" (ionInfinite)="loadMore($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

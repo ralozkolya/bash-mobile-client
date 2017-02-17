@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild, ElementRef} from '@angular/core';
 
-import {NavController, Refresher, InfiniteScroll} from 'ionic-angular';
+import {NavController, Refresher, InfiniteScroll, Content} from 'ionic-angular';
 import {HttpService} from "../../services/http.service";
 import {Quote} from "../../interfaces/interfaces";
 import {FeedType} from "../../interfaces/enums";
@@ -17,11 +17,15 @@ export class FeedComponent implements OnInit {
   @Input()
   private title: string;
 
+  @ViewChild(Content)
+  private content: Content;
+
   private quotes: Quote[];
   private page: number;
 
   private loadByRefresher: boolean = false;
   private loadFailed: boolean = false;
+  private loading: boolean = false;
 
   constructor(public navCtrl: NavController, private http: HttpService) {}
 
@@ -31,9 +35,12 @@ export class FeedComponent implements OnInit {
 
   private loadQuotes(refresher: Refresher = null): void {
 
+    if(this.content) this.content.scrollToTop(300);
+
+    this.loading = true;
+
     this.loadByRefresher = !!refresher;
 
-    this.quotes = null;
     this.loadFailed = false;
     this.http.getFeed(this.feedType).subscribe(response => {
 
@@ -44,8 +51,10 @@ export class FeedComponent implements OnInit {
       if(response.page) {
         this.page = response.page;
       }
+      this.loading = false;
     }, error => {
       this.loadFailed = true;
+      this.loading = false;
     });
   }
 
@@ -68,6 +77,14 @@ export class FeedComponent implements OnInit {
       }
     }, error => {
       this.loadFailed = true;
-    })
+    });
+  }
+
+  private showLoadMoreButton(): boolean {
+    return this.feedType === FeedType.Random;
+  }
+
+  private showInfiniteScrolling(): boolean {
+    return this.feedType !== FeedType.Random && this.page > 1;
   }
 }
