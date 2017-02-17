@@ -1,4 +1,4 @@
-import {Http, Response} from "@angular/http";
+import {Http, Response, Headers, URLSearchParams} from "@angular/http";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import 'rxjs/add/operator/map';
@@ -41,14 +41,15 @@ export class HttpService {
     if(type === Vote.Up) {
       act = 'rulez';
     } else {
-      act += 'sux';
+      act = 'sux';
     }
 
     let url: string = `${this.baseUrl}vote`;
 
-    return this.http.post(url, {
-      quote: quote,
-      act: act,
-    });
+    let urlSearchParams: URLSearchParams = new URLSearchParams();
+    urlSearchParams.append('quote', quote);
+    urlSearchParams.append('act', act);
+
+    return this.http.post(url, urlSearchParams);
   }
 }
