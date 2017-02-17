@@ -17,8 +17,8 @@
   <div class="quotes">
     <app-quote *ngFor="let quote of quotes" [quote]="quote"></app-quote>
   </div>
-  <div padding>
-    <button ion-button block *ngIf="showLoadMoreButton()" (click)="loadQuotes()">Хочу еще!</button>
+  <div padding *ngIf="showLoadMoreButton()">
+    <button ion-button block (click)="loadQuotes()">Хочу еще!</button>
   </div>
   <ion-infinite-scroll *ngIf="showInfiniteScrolling()" (ionInfinite)="loadMore($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>

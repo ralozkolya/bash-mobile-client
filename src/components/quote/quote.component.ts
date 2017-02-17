@@ -35,13 +35,10 @@ export class QuoteComponent {
     if(!this.lastVote) {
 
       let id: string = this.quote.id;
+      this.lastVote = vote;
+      this.quote.votes += vote;
 
-      this.http.vote(id, vote).subscribe(() => {
-        this.lastVote = vote;
-        this.quote.votes += vote;
-      }, error => {
-        console.log(error);
-      });
+      this.http.vote(id, vote).subscribe(() => {}, () => {});
     }
   }
 }
